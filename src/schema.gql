@@ -1,0 +1,78 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Flavor {
+  id: ID!
+  name: String!
+  coffees: [Coffee!]!
+}
+
+"""Coffee model"""
+type Coffee implements Drink {
+  name: String!
+
+  """A unique identifier"""
+  id: ID!
+  brand: String!
+  flavors: [Flavor!]!
+  createdAt: Date
+  type: CoffeType
+}
+
+interface Drink {
+  name: String!
+}
+
+enum CoffeType {
+  ARABICA
+  ROBUSTA
+}
+
+type Tea implements Drink {
+  name: String!
+
+  """A unique identifier"""
+  id: ID!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type Query {
+  drinks: [DrinkResult!]!
+  coffees: [Coffee!]!
+  coffee(id: ID!): Coffee!
+  tea: [Tea!]!
+}
+
+union DrinkResult = Coffee | Tea
+
+type Mutation {
+  createCoffee(createCoffeeInput: CreateCoffeeInput!): Coffee!
+  updateCoffee(id: Float!, updateCoffeeInput: UpdateCoffeeInput!): Coffee!
+  removeCoffee(id: Float!): Coffee!
+  createTea(createTeaInput: CreateTeaInput!): Tea!
+}
+
+input CreateCoffeeInput {
+  name: String!
+  brand: String!
+  flavors: [String!]!
+  type: CoffeType!
+}
+
+input UpdateCoffeeInput {
+  name: String
+  brand: String
+  flavors: [String!]
+  type: CoffeType
+}
+
+input CreateTeaInput {
+  name: String!
+}
+
+type Subscription {
+  coffeeAdded: Coffee!
+}
